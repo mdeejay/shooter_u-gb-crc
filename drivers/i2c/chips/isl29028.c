@@ -37,10 +37,18 @@
 #include <linux/slab.h>
 #include <mach/board.h>
 
+#if 0
 #define DPS(x...) printk(KERN_DEBUG "[PS][ISL29028] " x)
 #define DLS(x...) printk(KERN_DEBUG "[LS][ISL29028] " x)
 #define IPS(x...) printk(KERN_INFO "[PS][ISL29028] " x)
 #define ILS(x...) printk(KERN_INFO "[LS][ISL29028] " x)
+#else
+#define DPS(x...)
+#define DLS(x...)
+#define IPS(x...)
+#define ILS(x...)
+#endif
+
 #define EPS(x...) printk(KERN_ERR "[PS][ISL29028 ERROR] " x)
 #define ELS(x...) printk(KERN_ERR "[LS][ISL29028 ERROR] " x)
 
@@ -217,7 +225,7 @@ static uint16_t get_ls_adc_value(uint16_t *raw_adc_value)
 {
 	uint16_t value, tmp_value;
 	struct isl29028_info *lpi = lp_info;
-	char buffer[3] = {0};
+	char buffer[3];
 	int ret = 0;
 
 	buffer[0] = ISL29028_LS_DATA1;
@@ -490,7 +498,7 @@ static void report_lsensor_input_event(struct isl29028_info *lpi)
 
 		ILS("ALS_ADC = 0x%03X, Level = %d, l_thd equal 0, h_thd(adc_value+1) = 0x%x \n",
 			adc_value, level,  adc_value + 1);
-	} else if (i < 10) {
+	} else {
 		ret = set_lsensor_range((i == 0) ? 0 :
 				*(lpi->cali_table + (i - 1)) + 1,
 				*(lpi->cali_table + i));
@@ -503,9 +511,7 @@ static void report_lsensor_input_event(struct isl29028_info *lpi)
 		else
 			ILS("ALS_ADC = 0x%03X, Level = %d, l_thd equal = 0x%x, h_thd = 0x%x \n",
 				adc_value, level, *(lpi->cali_table + (i - 1)) + 1,*(lpi->cali_table + i));
-	} else
-		ILS("%s: i = %d\n", __func__, i);
-
+	}
 
 	/*DLS("%s: RAW ADC = 0x%03X\n", __func__, raw_adc_value);*/
 	input_report_abs(lpi->ls_input_dev, ABS_MISC, level);
@@ -549,7 +555,7 @@ static int is_only_ls_enabled(uint8_t reg_config)
 
 static void __report_psensor_near(struct isl29028_info *lpi, uint16_t ps_adc)
 {
-	int ret;
+	uint8_t ret;
 
 	set_irq_type(lpi->irq, IRQF_TRIGGER_HIGH);
 
@@ -592,7 +598,7 @@ static void __report_psensor_far(struct isl29028_info *lpi, uint16_t ps_adc)
 
 static void clear_intr_flags(uint8_t intrrupt, struct isl29028_info *lpi)
 {
-	int ret;
+	uint8_t ret;
 
 	if (intrrupt & ISL29028_INT_ALS_FLAG) {
 		ret = _isl29028_set_reg_bit(lpi->i2c_client, 0,
@@ -997,7 +1003,8 @@ static irqreturn_t isl29028_irq_handler(int irq, void *data)
 		IPS("%s\n", __func__);
 
 	disable_irq_nosync(lpi->irq);
-	queue_work_on(0, lpi->lp_wq, &sensor_irq_work);
+
+	queue_work(lpi->lp_wq, &sensor_irq_work);
 
 	return IRQ_HANDLED;
 }
@@ -1612,7 +1619,6 @@ static ssize_t ps_test_mode_store(struct device *dev,
 {
 	char buffer[2] = "";
 	int test1 = 0, test2 = 0;
-	int value = 0;
 	int ret;
 
 	sscanf(buf, "0x%02x 0x%02x", &test1, &test2);

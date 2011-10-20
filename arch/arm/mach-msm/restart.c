@@ -180,7 +180,7 @@ static void msm_pm_flush_console(void)
 }
 
 /* It seems that modem would like to lock kernel before restarting the system. */
-inline void soc_restart(char mode, const char *cmd)
+/* inline */ void soc_restart(char mode, const char *cmd)
 {
 	lock_kernel();
 	arm_pm_restart(mode, cmd);
@@ -296,12 +296,6 @@ void arch_reset(char mode, const char *cmd)
 		if (timeout <= 0)
 			printk(KERN_NOTICE "%s: modem flushes cache timeout.\n", __func__);
 	}
-
-/* Added by HTC for forcing mdm9K to do the cache flush */
-#if defined(CONFIG_ARCH_MSM8X60_LTE)
-	if (mode == RESTART_MODE_MODEM_CRASH)
-		charm_panic_wait_mdm_shutdown();
-#endif
 
 	msm_pm_flush_console();
 
