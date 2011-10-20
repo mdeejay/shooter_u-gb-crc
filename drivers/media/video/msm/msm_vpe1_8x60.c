@@ -807,11 +807,6 @@ static int vpe_proc_general(struct msm_vpe_cmd *cmd)
 		}
 		cmdp = kmalloc(VPE_OPERATION_MODE_CFG_LEN,
 					GFP_ATOMIC);
-		if (!cmdp) {
-			rc = -ENOMEM;
-			CDBG("[CAM] %s: cmdp allocation failed. \n", __func__);
-			goto vpe_proc_general_done;
-			}
 		if (copy_from_user(cmdp,
 			(void __user *)(cmd->value),
 			VPE_OPERATION_MODE_CFG_LEN)) {
@@ -1367,12 +1362,7 @@ static struct platform_driver msm_vpe_driver = {
 
 static int __init msm_vpe_init(void)
 {
-	extern unsigned engineerid;
-	extern unsigned system_rev;
-	if (system_rev == 0x80 && engineerid == 0x1)
-		return 0;
-	else
-		return platform_driver_register(&msm_vpe_driver);
+	return platform_driver_register(&msm_vpe_driver);
 }
 module_init(msm_vpe_init);
 
