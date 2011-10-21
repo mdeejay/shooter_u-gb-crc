@@ -24,6 +24,7 @@
 #include <linux/io.h>
 #include <linux/spinlock.h>
 #include <linux/delay.h>
+#include <linux/clk.h>
 #include <mach/msm_iomap.h>
 #include <mach/clk.h>
 #include <mach/msm_xo.h>
@@ -1122,8 +1123,8 @@ static struct clk_freq_tbl clk_tbl_gfx2d[] = {
 	F_GFX2D(145455000, MM_PLL1,  2, 11, NOMINAL),
 	F_GFX2D(160000000, MM_PLL1,  1,  5, NOMINAL),
 	F_GFX2D(177778000, MM_PLL1,  2,  9, NOMINAL),
-	F_GFX2D(228570000, MM_PLL1,  1,  4, NOMINAL),
-	F_GFX2D(266667000, MM_PLL1,  2,  7, HIGH),
+	F_GFX2D(200000000, MM_PLL1,  1,  4, NOMINAL),
+	F_GFX2D(228571000, MM_PLL1,  2,  7, HIGH),
 	F_END,
 };
 
@@ -1187,9 +1188,11 @@ static struct clk_freq_tbl clk_tbl_gfx3d[] = {
 	F_GFX3D(160000000, MM_PLL1,  1,  5, NOMINAL),
 	F_GFX3D(177778000, MM_PLL1,  2,  9, NOMINAL),
 	F_GFX3D(200000000, MM_PLL1,  1,  4, NOMINAL),
+//	F_GFX3D(228571000, MM_PLL1,  2,  7, NOMINAL),
 	F_GFX3D(266667000, MM_PLL1,  2,  7, NOMINAL),
-	F_GFX3D(320000000, MM_PLL1,  1,  3, HIGH),
-	F_GFX3D(320000000, MM_PLL1,  2,  5, HIGH),
+//	F_GFX3D(266667000, MM_PLL1,  1,  3, HIGH),
+        F_GFX3D(320000000, MM_PLL1,  1,  3, HIGH),
+//	F_GFX3D(320000000, MM_PLL1,  2,  5, HIGH),
 	F_END,
 };
 
@@ -1272,8 +1275,8 @@ static struct clk_freq_tbl clk_tbl_jpegd[] = {
 	F_JPEGD( 64000000, MM_GPERF, 6, LOW),
 	F_JPEGD( 76800000, MM_GPERF, 5, LOW),
 	F_JPEGD( 96000000, MM_GPERF, 4, LOW),
-	F_JPEGD(200000000, MM_PLL1,  5, NOMINAL),
-	F_JPEGD(228570000, MM_PLL1,  4, NOMINAL),
+	F_JPEGD(160000000, MM_PLL1,  5, NOMINAL),
+	F_JPEGD(200000000, MM_PLL1,  4, NOMINAL),
 	F_END,
 };
 
@@ -1417,7 +1420,6 @@ static struct clk_freq_tbl clk_tbl_pixel_mdp[] = {
 	F_PIXEL_MDP( 64000000, MM_GPERF, 2,   1,   3, LOW),
 	F_PIXEL_MDP( 69300000, MM_GPERF, 1, 231, 1280, LOW),
 	F_PIXEL_MDP(69818000, MM_GPERF, 1,   2,  11, LOW),
-	F_PIXEL_MDP(71100000, MM_GPERF, 1, 237, 1280, LOW), /*(pll/pre_div)*(Md/Ns)=(384/1)*(237/1280)=384*(237/1280)=71.1 */
 	F_PIXEL_MDP(71200000, MM_GPERF, 1,   89, 480, LOW), /*(pll/pre_div)*(Md/Ns)=(384/1)*(89/480)=384*(89/480)=71.2 */
 	F_PIXEL_MDP(76800000, MM_GPERF, 1,   1,   5, LOW),
 	F_PIXEL_MDP( 85333000, MM_GPERF, 1,   2,    9, LOW),
@@ -2495,8 +2497,8 @@ static void reg_init(void)
 	 * gating for all clocks. Also set VFE_AHB's FORCE_CORE_ON bit to
 	 * prevent its memory from being collapsed when the clock is halted.
 	 * The sleep and wake-up delays are set to safe values. */
-	rmwreg(0x00000003, AHB_EN_REG,  0x6C000003);
-	writel(0x000007F9, AHB_EN2_REG);
+	rmwreg(0x00000003, AHB_EN_REG,  0x0F7FFFFF);
+	rmwreg(0x000007F9, AHB_EN2_REG, 0x7FFFBFFF);
 
 	/* Deassert all locally-owned MM AHB resets. */
 	rmwreg(0, SW_RESET_AHB_REG, 0xFFF7DFFF);
@@ -2504,7 +2506,7 @@ static void reg_init(void)
 	/* Initialize MM AXI registers: Enable HW gating for all clocks that
 	 * support it. Also set FORCE_CORE_ON bits, and any sleep and wake-up
 	 * delays to safe values. */
-	rmwreg(0x100207F9, MAXI_EN_REG,  0x1803FFFF);
+	rmwreg(0x000307F9, MAXI_EN_REG,  0x0FFFFFFF);
 	/* MAXI_EN2_REG is owned by the RPM.  Don't touch it. */
 	writel(0x3FE7FCFF, MAXI_EN3_REG);
 	writel(0x000001D8, SAXI_EN_REG);
@@ -2512,23 +2514,28 @@ static void reg_init(void)
 	/* Initialize MM CC registers: Set MM FORCE_CORE_ON bits so that core
 	 * memories retain state even when not clocked. Also, set sleep and
 	 * wake-up delays to safe values. */
-	rmwreg(0x00000000, CSI_CC_REG,    0x00000018);
-	rmwreg(0x00000400, MISC_CC_REG,   0x017C0400);
-	rmwreg(0x000007FD, MISC_CC2_REG,  0x70C2E7FF);
-	rmwreg(0x80FF0000, GFX2D0_CC_REG, 0xE0FF0010);
-	rmwreg(0x80FF0000, GFX2D1_CC_REG, 0xE0FF0010);
-	rmwreg(0x80FF0000, GFX3D_CC_REG,  0xE0FF0010);
-	rmwreg(0x80FF0000, IJPEG_CC_REG,  0xE0FF0018);
-	rmwreg(0x80FF0000, JPEGD_CC_REG,  0xE0FF0018);
-	rmwreg(0x80FF0000, MDP_CC_REG,    0xE1FF0010);
-	rmwreg(0x80FF0000, PIXEL_CC_REG,  0xE1FF0010);
-	rmwreg(0x000004FF, PIXEL_CC2_REG, 0x000007FF);
-	rmwreg(0x80FF0000, ROT_CC_REG,    0xE0FF0010);
-	rmwreg(0x80FF0000, TV_CC_REG,     0xE1FFC010);
-	rmwreg(0x000004FF, TV_CC2_REG,    0x000027FF);
-	rmwreg(0xC0FF0000, VCODEC_CC_REG, 0xE0FF0010);
-	rmwreg(0x80FF0000, VFE_CC_REG,    0xE0FFC010);
-	rmwreg(0x80FF0000, VPE_CC_REG,    0xE0FF0010);
+	writel(0x00000000, CSI_CC_REG);
+	rmwreg(0x00000000, MISC_CC_REG,  0xFEFFF3FF);
+	rmwreg(0x000007FD, MISC_CC2_REG, 0xFFFF7FFF);
+	writel(0x80FF0000, GFX2D0_CC_REG);
+	writel(0x80FF0000, GFX2D1_CC_REG);
+	writel(0x80FF0000, GFX3D_CC_REG);
+	writel(0x80FF0000, IJPEG_CC_REG);
+	writel(0x80FF0000, JPEGD_CC_REG);
+	/* MDP and PIXEL clocks may be running at boot, don't turn them off. */
+	rmwreg(0x80FF0000, MDP_CC_REG,   BM(31, 29) | BM(23, 16));
+#ifdef CONFIG_FB_MSM_LCDC_AUO_WXGA
+	rmwreg(0x80FF0200, PIXEL_CC_REG, BM(31, 29) | BM(23, 16));
+#else
+	rmwreg(0x80FF0000, PIXEL_CC_REG, BM(31, 29) | BM(23, 16));
+#endif
+	writel(0x000004FF, PIXEL_CC2_REG);
+	writel(0x80FF0000, ROT_CC_REG);
+	writel(0x80FF0000, TV_CC_REG);
+	writel(0x000004FF, TV_CC2_REG);
+	writel(0xC0FF0000, VCODEC_CC_REG);
+	writel(0x80FF0000, VFE_CC_REG);
+	writel(0x80FF0000, VPE_CC_REG);
 
 	/* De-assert MM AXI resets to all hardware blocks. */
 	writel(0, SW_RESET_AXI_REG);
@@ -2599,7 +2606,25 @@ void msm_clk_soc_set_ignore_list(int *ignore_clk, unsigned num_ignore_clk)
 
 static int msm_clk_soc_late_init(void)
 {
-	return local_unvote_sys_vdd(HIGH);
+	int rc;
+
+	/* Vote for MMFPB to be at least 64MHz when an Apps CPU is active. */
+	struct clk *mmfpb_a_clk = clk_get(NULL, "mmfpb_a_clk");
+	if (WARN(IS_ERR(mmfpb_a_clk), "mmfpb_a_clk not found (%ld)\n",
+			PTR_ERR(mmfpb_a_clk)))
+		return PTR_ERR(mmfpb_a_clk);
+	rc = clk_set_min_rate(mmfpb_a_clk, 64000000);
+	if (WARN(rc, "mmfpb_a_clk rate was not set (%d)\n", rc))
+		return rc;
+	rc = clk_enable(mmfpb_a_clk);
+	if (WARN(rc, "mmfpb_a_clk not enabled (%d)\n", rc))
+		return rc;
+
+	/* Remove temporary vote for HIGH vdd_dig. */
+	rc = local_unvote_sys_vdd(HIGH);
+	WARN(rc, "local_unvote_sys_vdd(HIGH) failed (%d)\n", rc);
+
+	return rc;
 }
 late_initcall(msm_clk_soc_late_init);
 

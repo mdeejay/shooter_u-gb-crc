@@ -89,11 +89,6 @@
 #define SPSS1_CLK_SEL_ADDR		(MSM_ACC1_BASE + 0x08)
 #define SPSS_L2_CLK_SEL_ADDR		(MSM_GCC_BASE  + 0x38)
 
-/* Speed bin register. */
-#define QFPROM_SPEED_BIN_ADDR		(MSM_QFPROM_BASE + 0x00C0)
-
-/* frequency defaults */
-#define FREQ_TABLE_SIZE			35
 
 static const void * const clk_ctl_addr[] = {SPSS0_CLK_CTL_ADDR,
 			SPSS1_CLK_CTL_ADDR};
@@ -209,96 +204,8 @@ static struct clkctl_l2_speed l2_freq_tbl_v2[] = {
 };
 
 #define L2(x) (&l2_freq_tbl_v2[(x)])
-
-#if 0
 /* SCPLL frequencies = 2 * 27 MHz * L_VAL */
-static struct clkctl_acpu_speed acpu_freq_tbl_1188mhz[] = {
-  { {1, 1},  192000,  ACPU_PLL_8, 3, 1, 0, 0,    L2(1),   812500, 0x03006000},
-  /* MAX_AXI row is used to source CPU cores and L2 from the AFAB clock. */
-  { {0, 0},  MAX_AXI, ACPU_AFAB,  1, 0, 0, 0,    L2(0),   875000, 0x03006000},
-  { {1, 1},  384000,  ACPU_PLL_8, 3, 0, 0, 0,    L2(1),   875000, 0x03006000},
-  { {1, 1},  432000,  ACPU_SCPLL, 0, 0, 1, 0x08, L2(1),   887500, 0x03006000},
-  { {1, 1},  486000,  ACPU_SCPLL, 0, 0, 1, 0x09, L2(2),   912500, 0x03006000},
-  { {1, 1},  540000,  ACPU_SCPLL, 0, 0, 1, 0x0A, L2(3),   925000, 0x03006000},
-  { {1, 1},  594000,  ACPU_SCPLL, 0, 0, 1, 0x0B, L2(4),   937500, 0x03006000},
-  { {1, 1},  648000,  ACPU_SCPLL, 0, 0, 1, 0x0C, L2(5),   950000, 0x03006000},
-  { {1, 1},  702000,  ACPU_SCPLL, 0, 0, 1, 0x0D, L2(6),   975000, 0x03006000},
-  { {1, 1},  756000,  ACPU_SCPLL, 0, 0, 1, 0x0E, L2(7),  1000000, 0x03006000},
-  { {1, 1},  810000,  ACPU_SCPLL, 0, 0, 1, 0x0F, L2(8),  1012500, 0x03006000},
-  { {1, 1},  864000,  ACPU_SCPLL, 0, 0, 1, 0x10, L2(9),  1037500, 0x03006000},
-  { {1, 1},  918000,  ACPU_SCPLL, 0, 0, 1, 0x11, L2(10), 1062500, 0x03006000},
-  { {1, 1},  972000,  ACPU_SCPLL, 0, 0, 1, 0x12, L2(11), 1087500, 0x03006000},
-  { {1, 1}, 1026000,  ACPU_SCPLL, 0, 0, 1, 0x13, L2(12), 1125000, 0x03006000},
-  { {1, 1}, 1080000,  ACPU_SCPLL, 0, 0, 1, 0x14, L2(13), 1137500, 0x03006000},
-  { {1, 1}, 1134000,  ACPU_SCPLL, 0, 0, 1, 0x15, L2(14), 1162500, 0x03006000},
-  { {1, 1}, 1188000,  ACPU_SCPLL, 0, 0, 1, 0x16, L2(15), 1187500, 0x03006000},
-  { {0, 0}, 0 },
-};
-
-/* SCPLL frequencies = 2 * 27 MHz * L_VAL */
-static struct clkctl_acpu_speed acpu_freq_tbl_slow[] = {
-  { {1, 1},  192000,  ACPU_PLL_8, 3, 1, 0, 0,    L2(1),   812500, 0x03006000},
-  /* MAX_AXI row is used to source CPU cores and L2 from the AFAB clock. */
-  { {0, 0},  MAX_AXI, ACPU_AFAB,  1, 0, 0, 0,    L2(0),   875000, 0x03006000},
-  { {1, 1},  384000,  ACPU_PLL_8, 3, 0, 0, 0,    L2(1),   875000, 0x03006000},
-  { {1, 1},  432000,  ACPU_SCPLL, 0, 0, 1, 0x08, L2(1),   887500, 0x03006000},
-  { {1, 1},  486000,  ACPU_SCPLL, 0, 0, 1, 0x09, L2(2),   912500, 0x03006000},
-  { {1, 1},  540000,  ACPU_SCPLL, 0, 0, 1, 0x0A, L2(3),   925000, 0x03006000},
-  { {1, 1},  594000,  ACPU_SCPLL, 0, 0, 1, 0x0B, L2(4),   937500, 0x03006000},
-  { {1, 1},  648000,  ACPU_SCPLL, 0, 0, 1, 0x0C, L2(5),   950000, 0x03006000},
-  { {1, 1},  702000,  ACPU_SCPLL, 0, 0, 1, 0x0D, L2(6),   975000, 0x03006000},
-  { {1, 1},  756000,  ACPU_SCPLL, 0, 0, 1, 0x0E, L2(7),  1000000, 0x03006000},
-  { {1, 1},  810000,  ACPU_SCPLL, 0, 0, 1, 0x0F, L2(8),  1012500, 0x03006000},
-  { {1, 1},  864000,  ACPU_SCPLL, 0, 0, 1, 0x10, L2(9),  1037500, 0x03006000},
-  { {1, 1},  918000,  ACPU_SCPLL, 0, 0, 1, 0x11, L2(10), 1062500, 0x03006000},
-  { {1, 1},  972000,  ACPU_SCPLL, 0, 0, 1, 0x12, L2(11), 1087500, 0x03006000},
-  { {1, 1}, 1026000,  ACPU_SCPLL, 0, 0, 1, 0x13, L2(12), 1100000, 0x03006000},
-  { {1, 1}, 1080000,  ACPU_SCPLL, 0, 0, 1, 0x14, L2(13), 1112500, 0x03006000},
-  { {1, 1}, 1134000,  ACPU_SCPLL, 0, 0, 1, 0x15, L2(14), 1125000, 0x03006000},
-  { {1, 1}, 1188000,  ACPU_SCPLL, 0, 0, 1, 0x16, L2(15), 1137500, 0x03006000},
-  { {1, 1}, 1242000,  ACPU_SCPLL, 0, 0, 1, 0x17, L2(16), 1150000, 0x03006000},
-  { {1, 1}, 1296000,  ACPU_SCPLL, 0, 0, 1, 0x18, L2(17), 1175000, 0x03006000},
-  { {1, 1}, 1350000,  ACPU_SCPLL, 0, 0, 1, 0x19, L2(18), 1200000, 0x03006000},
-  { {1, 1}, 1404000,  ACPU_SCPLL, 0, 0, 1, 0x1A, L2(19), 1225000, 0x03006000},
-  { {1, 1}, 1458000,  ACPU_SCPLL, 0, 0, 1, 0x1B, L2(19), 1237500, 0x03006000},
-  { {1, 1}, 1512000,  ACPU_SCPLL, 0, 0, 1, 0x1C, L2(19), 1250000, 0x03006000},
-  { {0, 0}, 0 },
-};
-
-/* SCPLL frequencies = 2 * 27 MHz * L_VAL */
-static struct clkctl_acpu_speed acpu_freq_tbl_nom[] = {
-  { {1, 1},  192000,  ACPU_PLL_8, 3, 1, 0, 0,    L2(1),   812500, 0x03006000},
-  /* MAX_AXI row is used to source CPU cores and L2 from the AFAB clock. */
-  { {0, 0},  MAX_AXI, ACPU_AFAB,  1, 0, 0, 0,    L2(0),   875000, 0x03006000},
-  { {1, 1},  384000,  ACPU_PLL_8, 3, 0, 0, 0,    L2(1),   875000, 0x03006000},
-  { {1, 1},  432000,  ACPU_SCPLL, 0, 0, 1, 0x08, L2(1),   887500, 0x03006000},
-  { {1, 1},  486000,  ACPU_SCPLL, 0, 0, 1, 0x09, L2(2),   912500, 0x03006000},
-  { {1, 1},  540000,  ACPU_SCPLL, 0, 0, 1, 0x0A, L2(3),   925000, 0x03006000},
-  { {1, 1},  594000,  ACPU_SCPLL, 0, 0, 1, 0x0B, L2(4),   937500, 0x03006000},
-  { {1, 1},  648000,  ACPU_SCPLL, 0, 0, 1, 0x0C, L2(5),   950000, 0x03006000},
-  { {1, 1},  702000,  ACPU_SCPLL, 0, 0, 1, 0x0D, L2(6),   975000, 0x03006000},
-  { {1, 1},  756000,  ACPU_SCPLL, 0, 0, 1, 0x0E, L2(7),  1000000, 0x03006000},
-  { {1, 1},  810000,  ACPU_SCPLL, 0, 0, 1, 0x0F, L2(8),  1012500, 0x03006000},
-  { {1, 1},  864000,  ACPU_SCPLL, 0, 0, 1, 0x10, L2(9),  1037500, 0x03006000},
-  { {1, 1},  918000,  ACPU_SCPLL, 0, 0, 1, 0x11, L2(10), 1062500, 0x03006000},
-  { {1, 1},  972000,  ACPU_SCPLL, 0, 0, 1, 0x12, L2(11), 1062500, 0x03006000},
-  { {1, 1}, 1026000,  ACPU_SCPLL, 0, 0, 1, 0x13, L2(12), 1075000, 0x03006000},
-  { {1, 1}, 1080000,  ACPU_SCPLL, 0, 0, 1, 0x14, L2(13), 1087500, 0x03006000},
-  { {1, 1}, 1134000,  ACPU_SCPLL, 0, 0, 1, 0x15, L2(14), 1100000, 0x03006000},
-  { {1, 1}, 1188000,  ACPU_SCPLL, 0, 0, 1, 0x16, L2(15), 1112500, 0x03006000},
-  { {1, 1}, 1242000,  ACPU_SCPLL, 0, 0, 1, 0x17, L2(16), 1125000, 0x03006000},
-  { {1, 1}, 1296000,  ACPU_SCPLL, 0, 0, 1, 0x18, L2(17), 1150000, 0x03006000},
-  { {1, 1}, 1350000,  ACPU_SCPLL, 0, 0, 1, 0x19, L2(18), 1175000, 0x03006000},
-  { {1, 1}, 1404000,  ACPU_SCPLL, 0, 0, 1, 0x1A, L2(19), 1200000, 0x03006000},
-  { {1, 1}, 1458000,  ACPU_SCPLL, 0, 0, 1, 0x1B, L2(19), 1212500, 0x03006000},
-  { {1, 1}, 1512000,  ACPU_SCPLL, 0, 0, 1, 0x1C, L2(19), 1225000, 0x03006000},
-  { {0, 0}, 0 },
-};
-
-#endif
-
-/* SCPLL frequencies = 2 * 27 MHz * L_VAL */
-static struct clkctl_acpu_speed acpu_freq_tbl_fast[] = {
+static struct clkctl_acpu_speed acpu_freq_tbl_v2[] = {
   { {1, 1},  192000,  ACPU_PLL_8, 3, 1, 0, 0,    L2(1),   812500, 0x03006000},
   /* MAX_AXI row is used to source CPU cores and L2 from the AFAB clock. */
   { {0, 0},  MAX_AXI, ACPU_AFAB,  1, 0, 0, 0,    L2(0),   875000, 0x03006000},
@@ -331,8 +238,6 @@ static struct clkctl_acpu_speed acpu_freq_tbl_fast[] = {
   { {1, 1}, 1782000,  ACPU_SCPLL, 0, 0, 1, 0x21, L2(21), 1325000, 0x03006000},
   { {0, 0}, 0 },
 };
-
-
 /* acpu_freq_tbl row to use when reconfiguring SC/L2 PLLs. */
 #define CAL_IDX 1
 
@@ -541,7 +446,7 @@ static void set_bus_bw(unsigned int bw)
 		return;
 	}
 
-	/* Update bandwidth if requst has changed. */
+	/* Update bandwidth if requst has changed. This may sleep. */
 	ret = msm_bus_scale_client_update_request(bus_perf_client, bw);
 	if (ret)
 		pr_err("%s: bandwidth request failed (%d)\n", __func__, ret);
@@ -551,7 +456,7 @@ static void set_bus_bw(unsigned int bw)
 
 /* Apply any per-cpu voltage increases. */
 static int increase_vdd(int cpu, unsigned int vdd_sc, unsigned int vdd_mem,
-			unsigned int vdd_dig)
+			unsigned int vdd_dig, enum setrate_reason reason)
 {
 	int rc = 0;
 
@@ -574,6 +479,13 @@ static int increase_vdd(int cpu, unsigned int vdd_sc, unsigned int vdd_mem,
 		return rc;
 	}
 
+	 /* Don't update the Scorpion voltage in the hotplug path.  It should
+	  * already be correct.  Attempting to set it is bad because we don't
+	  * know what CPU we are running on at this point, but the Scorpion
+	  * regulator API requires we call it from the affected CPU.  */
+	if (reason == SETRATE_HOTPLUG)
+		return rc;
+
 	/* Update per-core Scorpion voltage. */
 	rc = regulator_set_voltage(regulator_sc[cpu], vdd_sc, MAX_VDD_SC);
 	if (rc) {
@@ -587,16 +499,21 @@ static int increase_vdd(int cpu, unsigned int vdd_sc, unsigned int vdd_mem,
 
 /* Apply any per-cpu voltage decreases. */
 static void decrease_vdd(int cpu, unsigned int vdd_sc, unsigned int vdd_mem,
-			 unsigned int vdd_dig)
+			 unsigned int vdd_dig, enum setrate_reason reason)
 {
 	int ret;
 
-	/* Update per-core Scorpion voltage. */
-	ret = regulator_set_voltage(regulator_sc[cpu], vdd_sc, MAX_VDD_SC);
-	if (ret) {
-		pr_err("%s: vdd_sc (cpu%d) decrease failed (%d)\n",
-			__func__, cpu, ret);
-		return;
+	/* Update per-core Scorpion voltage. This must be called on the CPU
+	 * that's being affected. Don't do this in the hotplug remove path,
+	 * where the rail is off and we're executing on the other CPU. */
+	if (reason != SETRATE_HOTPLUG) {
+		ret = regulator_set_voltage(regulator_sc[cpu], vdd_sc,
+					    MAX_VDD_SC);
+		if (ret) {
+			pr_err("%s: vdd_sc (cpu%d) decrease failed (%d)\n",
+				__func__, cpu, ret);
+			return;
+		}
 	}
 
 	/* Decrease vdd_dig active-set vote. */
@@ -656,7 +573,7 @@ int acpuclk_set_rate(int cpu, unsigned long rate, enum setrate_reason reason)
 		goto out;
 	}
 
-	if (reason == SETRATE_CPUFREQ) {
+	if (reason == SETRATE_CPUFREQ || reason == SETRATE_HOTPLUG) {
 		mutex_lock(&drv_state.lock);
 #ifdef CONFIG_ACPUCLK_SET_RATE_DEBUG
 		set_rate_process = current;
@@ -698,9 +615,10 @@ int acpuclk_set_rate(int cpu, unsigned long rate, enum setrate_reason reason)
 	vdd_dig = max(tgt_s->l2_level->vdd_dig, pll_vdd_dig);
 
 	/* Increase VDD levels if needed. */
-	if ((reason == SETRATE_CPUFREQ || reason == SETRATE_INIT)
+	if ((reason == SETRATE_CPUFREQ || reason == SETRATE_HOTPLUG
+	  || reason == SETRATE_INIT)
 			&& (tgt_s->acpuclk_khz > strt_s->acpuclk_khz)) {
-		rc = increase_vdd(cpu, tgt_s->vdd_sc, vdd_mem, vdd_dig);
+		rc = increase_vdd(cpu, tgt_s->vdd_sc, vdd_mem, vdd_dig, reason);
 		if (rc)
 			goto out;
 	}
@@ -730,7 +648,7 @@ int acpuclk_set_rate(int cpu, unsigned long rate, enum setrate_reason reason)
 
 	/* Drop VDD levels if we can. */
 	if (tgt_s->acpuclk_khz < strt_s->acpuclk_khz)
-		decrease_vdd(cpu, tgt_s->vdd_sc, vdd_mem, vdd_dig);
+		decrease_vdd(cpu, tgt_s->vdd_sc, vdd_mem, vdd_dig, reason);
 
 	dprintk("ACPU%d speed change complete\n", cpu);
 
@@ -739,7 +657,7 @@ int acpuclk_set_rate(int cpu, unsigned long rate, enum setrate_reason reason)
 		AVS_ENABLE(cpu, tgt_s->avsdscr_setting);
 
 out:
-	if (reason == SETRATE_CPUFREQ) {
+	if (reason == SETRATE_CPUFREQ || reason == SETRATE_HOTPLUG) {
 		mutex_unlock(&drv_state.lock);
 #ifdef CONFIG_ACPUCLK_SET_RATE_DEBUG
 		del_timer(&set_rate_timer);
@@ -752,46 +670,46 @@ out:
 
 ssize_t acpuclk_get_vdd_levels_str(char *buf) {
 
-	int i, len = 0;
+  int i, len = 0;
 
-	if (buf) {
-		mutex_lock(&drv_state.lock);
+  if (buf) {
+    mutex_lock(&drv_state.lock);
 
-		for (i = 0; acpu_freq_tbl[i].acpuclk_khz; i++) {
-			/* updated to use uv required by 8x60 architecture - faux123 */
-			len += sprintf(buf + len, "%8u: %8d\n", acpu_freq_tbl[i].acpuclk_khz, acpu_freq_tbl[i].vdd_sc );
-		}
+    for (i = 0; acpu_freq_tbl[i].acpuclk_khz; i++) {
+      /* updated to use uv required by 8x60 architecture - faux123 */
+      len += sprintf(buf + len, "%8u: %8d\n", acpu_freq_tbl[i].acpuclk_khz, acpu_freq_tbl[i].vdd_sc );
+    }
 
-		mutex_unlock(&drv_state.lock);
-	}
-	return len;
+    mutex_unlock(&drv_state.lock);
+  }
+  return len;
 }
 
 /* updated to use uv required by 8x60 architecture - faux123 */
 void acpuclk_set_vdd(unsigned int khz, int vdd_uv) {
 
-	int i;
-	unsigned int new_vdd_uv;
-//	int vdd_uv;
+  int i;
+  unsigned int new_vdd_uv;
+//  int vdd_uv;
 
-//	vdd_uv = vdd_mv * 1000;
+//  vdd_uv = vdd_mv * 1000;
 
-	mutex_lock(&drv_state.lock);
+  mutex_lock(&drv_state.lock);
 
-	for (i = 0; acpu_freq_tbl[i].acpuclk_khz; i++) {
-		if (khz == 0)
-			new_vdd_uv = min(max((acpu_freq_tbl[i].vdd_sc + vdd_uv), (unsigned int)MIN_VDD_SC), (unsigned int)MAX_VDD_SC);
-		else if ( acpu_freq_tbl[i].acpuclk_khz == khz)
-			new_vdd_uv = min(max((unsigned int)vdd_uv, (unsigned int)MIN_VDD_SC), (unsigned int)MAX_VDD_SC);
-		else 
-			continue;
+  for (i = 0; acpu_freq_tbl[i].acpuclk_khz; i++) {
+    if (khz == 0)
+      new_vdd_uv = min(max((acpu_freq_tbl[i].vdd_sc + vdd_uv), (unsigned int)MIN_VDD_SC), (unsigned int)MAX_VDD_SC);
+    else if ( acpu_freq_tbl[i].acpuclk_khz == khz)
+      new_vdd_uv = min(max((unsigned int)vdd_uv, (unsigned int)MIN_VDD_SC), (unsigned int)MAX_VDD_SC);
+    else 
+      continue;
 
-		acpu_freq_tbl[i].vdd_sc = new_vdd_uv;
-	}
+    acpu_freq_tbl[i].vdd_sc = new_vdd_uv;
+  }
 
-	mutex_unlock(&drv_state.lock);
+  mutex_unlock(&drv_state.lock);
 }
-#endif	/* CONFIG_CPU_VOTALGE_TABLE */
+#endif  /* CONFIG_CPU_VOTALGE_TABLE */
 
 static void __init scpll_init(int sc_pll)
 {
@@ -913,7 +831,7 @@ static void __init bus_init(void)
 }
 
 #ifdef CONFIG_CPU_FREQ_MSM
-static struct cpufreq_frequency_table freq_table[NR_CPUS][FREQ_TABLE_SIZE];
+static struct cpufreq_frequency_table freq_table[NR_CPUS][35];
 
 static void __init cpufreq_table_init(void)
 {
@@ -948,37 +866,42 @@ static void __init cpufreq_table_init(void)
 static void __init cpufreq_table_init(void) {}
 #endif
 
-static unsigned int __init select_freq_plan(void)
+#define HOT_UNPLUG_KHZ MAX_AXI
+static int __cpuinit acpuclock_cpu_callback(struct notifier_block *nfb,
+					    unsigned long action, void *hcpu)
 {
-	uint32_t raw_speed_bin, speed_bin, max_khz;
-	struct clkctl_acpu_speed *f;
+	static int prev_khz[NR_CPUS];
+	int cpu = (int)hcpu;
 
-
-	raw_speed_bin = readl(QFPROM_SPEED_BIN_ADDR);
-	speed_bin = raw_speed_bin & 0xF;
-	if (speed_bin == 0xF)
-		speed_bin = (raw_speed_bin >> 4) & 0xF;
-	if (speed_bin == 0x1)
-		max_khz = 1512000;
-	else
-		max_khz = 1512000;
-
-	/* Truncate the table based to max_khz. */
-	for (f = acpu_freq_tbl; f->acpuclk_khz != 0; f++) {
-		if (f->acpuclk_khz > max_khz) {
-			f->acpuclk_khz = 0;
-			break;
-		}
+	switch (action) {
+	case CPU_DEAD:
+	case CPU_DEAD_FROZEN:
+		prev_khz[cpu] = acpuclk_get_rate(cpu);
+		/* Fall through. */
+	case CPU_UP_CANCELED:
+	case CPU_UP_CANCELED_FROZEN:
+		acpuclk_set_rate(cpu, HOT_UNPLUG_KHZ, SETRATE_HOTPLUG);
+		break;
+	case CPU_UP_PREPARE:
+	case CPU_UP_PREPARE_FROZEN:
+		if (WARN_ON(!prev_khz[cpu]))
+			prev_khz[cpu] = acpu_freq_tbl->acpuclk_khz;
+		acpuclk_set_rate(cpu, prev_khz[cpu], SETRATE_HOTPLUG);
+		break;
+	default:
+		break;
 	}
-	f--;
-	pr_info("Max ACPU freq: %u KHz\n", f->acpuclk_khz);
 
-	return f->acpuclk_khz;
+  return NOTIFY_OK;
 }
+
+static struct notifier_block __cpuinitdata acpuclock_cpu_notifier = {
+  .notifier_call = acpuclock_cpu_callback,
+};
+
 
 void __init msm_acpu_clock_init(struct msm_acpu_clock_platform_data *clkdata)
 {
-	unsigned int max_cpu_khz;
 	int cpu;
 
 	mutex_init(&drv_state.lock);
@@ -987,7 +910,9 @@ void __init msm_acpu_clock_init(struct msm_acpu_clock_platform_data *clkdata)
 	drv_state.vdd_switch_time_us = clkdata->vdd_switch_time_us;
 
 	/* Configure hardware. */
-	max_cpu_khz = select_freq_plan();
+	acpu_freq_tbl = acpu_freq_tbl_v2;
+	l2_freq_tbl = l2_freq_tbl_v2;
+	l2_freq_tbl_size = ARRAY_SIZE(l2_freq_tbl_v2);
 	unselect_scplls();
 	scpll_set_refs();
 	for_each_possible_cpu(cpu)
@@ -998,8 +923,10 @@ void __init msm_acpu_clock_init(struct msm_acpu_clock_platform_data *clkdata)
 
 	/* Improve boot time by ramping up CPUs immediately. */
 	for_each_online_cpu(cpu)
-		//acpuclk_set_rate(cpu, max_cpu_khz, SETRATE_INIT);
 		acpuclk_set_rate(cpu, 1512000, SETRATE_INIT);
 
 	cpufreq_table_init();
+        register_hotcpu_notifier(&acpuclock_cpu_notifier);
 }
+
+
