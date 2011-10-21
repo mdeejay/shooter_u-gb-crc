@@ -4458,6 +4458,10 @@ static int msm_device_init(struct msm_cam_device *pmsm,
 extern unsigned engineerid;
 extern unsigned system_rev;
 
+int msm_camera_drv_start_liteon(struct platform_device *dev,
+                int (*sensor_probe)(struct msm_camera_sensor_info *,
+                        struct msm_sensor_ctrl *));
+
 int msm_camera_drv_start(struct platform_device *dev,
 		int (*sensor_probe)(struct msm_camera_sensor_info *,
 			struct msm_sensor_ctrl *))
@@ -4466,11 +4470,15 @@ int msm_camera_drv_start(struct platform_device *dev,
 	struct msm_sync *sync;
 	int rc = -ENODEV;
 
+	if(system_rev ==0x80 && engineerid == 0x1)
+	{
+		return 	msm_camera_drv_start_liteon(dev,sensor_probe);
+	}
+	
 	if (camera_node >= MAX_SENSOR_NUM) {
 		pr_err("[CAM] %s: too many camera sensors\n", __func__);
 		return rc;
 	}
-
 	if (!msm_class) {
 		/* There are three device nodes per sensor */
 		rc = alloc_chrdev_region(&msm_devno, 0,
