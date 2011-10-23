@@ -139,6 +139,9 @@ extern int panel_type;
 
 #define XB 1
 
+#define MIN_VOLTAGE 800000
+#define MAX_VOLTAGE 1300000
+
 /*
  * The UI_INTx_N lines are pmic gpio lines which connect i2c
  * gpio expanders to the pm8058.
@@ -294,7 +297,7 @@ static struct msm_acpu_clock_platform_data msm8x60_acpu_clock_data = {
 static unsigned shooter_u_perf_acpu_table[] = {
 	384000000,
 	756000000,
-	1188000000,
+	1512000000,
 };
 
 static struct perflock_platform_data shooter_u_perflock_data = {
@@ -311,8 +314,8 @@ static struct regulator_consumer_supply saw_s1_supply =
 static struct regulator_init_data saw_s0_init_data = {
 		.constraints = {
 			.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE,
-			.min_uV = 840000,
-			.max_uV = 1350000,
+			.min_uV = MIN_VOLTAGE,
+			.max_uV = MAX_VOLTAGE,
 		},
 		.num_consumer_supplies = 1,
 		.consumer_supplies = &saw_s0_supply,
@@ -321,8 +324,8 @@ static struct regulator_init_data saw_s0_init_data = {
 static struct regulator_init_data saw_s1_init_data = {
 		.constraints = {
 			.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE,
-			.min_uV = 840000,
-			.max_uV = 1350000,
+			.min_uV = MIN_VOLTAGE,
+			.max_uV = MAX_VOLTAGE,
 		},
 		.num_consumer_supplies = 1,
 		.consumer_supplies = &saw_s1_supply,
@@ -2416,9 +2419,9 @@ static struct rpm_vreg_pdata rpm_vreg_init_pdata[RPM_VREG_ID_MAX] = {
 	RPM_VREG_INIT_LDO(PM8058_L24, 0, 1, 0, 1200000, 1200000, LDO150HMIN, RPM_VREG_PIN_CTRL_NONE),
 	RPM_VREG_INIT_LDO(PM8058_L25, 0, 1, 0, 1200000, 1200000, LDO150HMIN, RPM_VREG_PIN_CTRL_NONE), /* N/A */
 
-	RPM_VREG_INIT_SMPS(PM8058_S0, 0, 1, 1,  500000, 1350000, SMPS_HMIN, 0,
+	RPM_VREG_INIT_SMPS(PM8058_S0, 0, 1, 1,  500000, MAX_VOLTAGE, SMPS_HMIN, 0,
 		RPM_VREG_FREQ_1p92),
-	RPM_VREG_INIT_SMPS(PM8058_S1, 0, 1, 1,  500000, 1350000, SMPS_HMIN, 0,
+	RPM_VREG_INIT_SMPS(PM8058_S1, 0, 1, 1,  500000, MAX_VOLTAGE, SMPS_HMIN, 0,
 		RPM_VREG_FREQ_1p92),
 	RPM_VREG_INIT_SMPS(PM8058_S2, 0, 1, 0, 1200000, 1400000, SMPS_HMIN,
 		RPM_VREG_PIN_CTRL_A0, RPM_VREG_FREQ_1p92),
