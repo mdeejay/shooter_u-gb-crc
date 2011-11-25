@@ -140,7 +140,7 @@ extern int panel_type;
 #define XB 1
 
 #define MIN_VOLTAGE 750000
-#define MAX_VOLTAGE 1400000
+#define MAX_VOLTAGE 1450000
 
 /*
  * The UI_INTx_N lines are pmic gpio lines which connect i2c
