@@ -9844,6 +9844,7 @@ const struct sp3d_reg_conf para5_koj_init_2d_htc_m_1[] = {
 {0x0490, 0x0402},
 {0x049A, 0x05B5},
 {0x0490, 0x0402},
+
 {0x049A, 0x05C8},
 {0x0490, 0x0402},
 {0x049A, 0x05C5},
@@ -18874,6 +18875,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x050A},
 {0x0490, 0x0402},
+
 {0x049A, 0x050E},
 {0x0490, 0x0402},
 {0x049A, 0x0527},
@@ -27066,6 +27068,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x058C},
 {0x0490, 0x0402},
+
 {0x049A, 0x05FE},
 {0x0490, 0x0402},
 {0x049A, 0x050D},
@@ -35258,6 +35261,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x052B},
 {0x0490, 0x0402},
+
 {0x049A, 0x0573},
 {0x0490, 0x0402},
 {0x049A, 0x0521},
@@ -43450,6 +43454,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x05EC},
 {0x0490, 0x0402},
+
 {0x049A, 0x0523},
 {0x0490, 0x0402},
 {0x049A, 0x05EB},
@@ -51642,6 +51647,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0526},
 {0x0490, 0x0402},
+
 {0x049A, 0x0500},
 {0x0490, 0x0402},
 {0x049A, 0x0500},
@@ -59834,6 +59840,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x05E5},
 {0x0490, 0x0402},
+
 {0x049A, 0x0501},
 {0x0490, 0x0402},
 {0x049A, 0x0504},
@@ -68026,6 +68033,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x058E},
 {0x0490, 0x0402},
+
 {0x049A, 0x052B},
 {0x0490, 0x0402},
 {0x049A, 0x0522},
@@ -76218,6 +76226,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0521},
 {0x0490, 0x0402},
+
 {0x049A, 0x0500},
 {0x0490, 0x0402},
 {0x049A, 0x0500},
@@ -84410,6 +84419,7 @@ const struct sp3d_reg_conf para9_koj_scs_main_2d_htc_s[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0521},
 {0x0490, 0x0402},
+
 {0x049A, 0x0502},
 {0x0490, 0x0402},
 {0x049A, 0x0500},
@@ -89133,6 +89143,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0518},
 {0x0490, 0x0402},
+
 {0x049A, 0x057F},
 {0x0490, 0x0402},
 {0x049A, 0x05CD},
@@ -97325,6 +97336,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0501},
 {0x0490, 0x0402},
+
 {0x049A, 0x0587},
 {0x0490, 0x0402},
 {0x049A, 0x057D},
@@ -105517,6 +105529,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0502},
 {0x0490, 0x0402},
+
 {0x049A, 0x0528},
 {0x0490, 0x0402},
 {0x049A, 0x0506},
@@ -113709,6 +113722,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0539},
 {0x0490, 0x0402},
+
 {0x049A, 0x055E},
 {0x0490, 0x0402},
 {0x049A, 0x0523},
@@ -121901,6 +121915,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x05AF},
 {0x0490, 0x0402},
+
 {0x049A, 0x0572},
 {0x0490, 0x0402},
 {0x049A, 0x0500},
@@ -130093,6 +130108,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x050F},
 {0x0490, 0x0402},
+
 {0x049A, 0x0500},
 {0x0490, 0x0402},
 {0x049A, 0x0522},
@@ -138285,6 +138301,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0520},
 {0x0490, 0x0402},
+
 {0x049A, 0x0521},
 {0x0490, 0x0402},
 {0x049A, 0x0500},
@@ -146477,6 +146494,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0500},
 {0x0490, 0x0402},
+
 {0x049A, 0x0539},
 {0x0490, 0x0402},
 {0x049A, 0x05CD},
@@ -154669,6 +154687,7 @@ const struct sp3d_reg_conf para12_koj_scs_main_2d_htc_m[] = {
 {0x0490, 0x0402},
 {0x049A, 0x0589},
 {0x0490, 0x0402},
+
 {0x049A, 0x0530},
 {0x0490, 0x0402},
 {0x049A, 0x0507},
@@ -156783,7 +156802,7 @@ const struct sp3d_reg_conf koj_2d_preview[] = {
 {0x0490, 0x0402},
 };
 
-const struct sp3d_reg_conf koj_2d_720p_video[] = {
+const struct sp3d_reg_conf koj_2d_1080p_video[] = {
 {0x0492, 0x33F8},
 {0x049A, 0x020E},
 {0x0490, 0x0402},
@@ -156897,7 +156916,7 @@ const struct sp3d_reg_conf koj_2d_720p_video[] = {
 };
 
 
-const struct sp3d_reg_conf koj_2d_720p_video_15fps[] = {
+const struct sp3d_reg_conf koj_2d_1080p_video_30fps[] = {
 {0x0492, 0x33F8},
 {0x049A, 0x020E},
 {0x0490, 0x0402},
@@ -157012,7 +157031,7 @@ const struct sp3d_reg_conf koj_2d_720p_video_15fps[] = {
 
 
 
-const struct sp3d_reg_conf koj_2d_preview_15fps[] = {
+const struct sp3d_reg_conf koj_2d_preview_30fps[] = {
 {0x0492, 0x33F8},
 {0x049A, 0x020E},
 {0x0490, 0x0402},
@@ -157180,14 +157199,14 @@ struct sp3d_2d_reg sp3d_2D_regs = {
 	.reg_koj_2d_preview = &koj_2d_preview[0],
 	.reg_koj_2d_preview_size = ARRAY_SIZE(koj_2d_preview),
 
-	.reg_koj_2d_720p_video = &koj_2d_720p_video[0],
-	.reg_koj_2d_720p_video_size = ARRAY_SIZE(koj_2d_720p_video),
+	.reg_koj_2d_1080p_video = &koj_2d_1080p_video[0],
+	.reg_koj_2d_1080p_video_size = ARRAY_SIZE(koj_2d_1080p_video),
 
-	.reg_koj_2d_preview_15fps =  &koj_2d_preview_15fps[0],
-	.reg_koj_2d_preview_15fps_size =  ARRAY_SIZE(koj_2d_preview_15fps),
+	.reg_koj_2d_preview_30fps =  &koj_2d_preview_30fps[0],
+	.reg_koj_2d_preview_30fps_size =  ARRAY_SIZE(koj_2d_preview_30fps),
 
-	.reg_koj_2d_720p_video_15fps =  &koj_2d_720p_video_15fps[0],
-	.reg_koj_2d_720p_video_15fps_size =  ARRAY_SIZE(koj_2d_720p_video_15fps),
+	.reg_koj_2d_1080p_video_30fps =  &koj_2d_1080p_video_30fps[0],
+	.reg_koj_2d_1080p_video_30fps_size =  ARRAY_SIZE(koj_2d_1080p_video_30fps),
 };
 
 

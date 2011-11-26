@@ -451,8 +451,8 @@ static int sp3d_wait_INT(int frame){
 static int sp3d_video_setting(void){
 	int rc = 0;
 	pr_info("[CAM]sp3d_video_setting");
-	rc = sp3d_spi_write_table(sp3d_2D_regs.reg_koj_2d_720p_video,
-                               sp3d_2D_regs.reg_koj_2d_720p_video_size);
+	rc = sp3d_spi_write_table(sp3d_2D_regs.reg_koj_2d_1080p_video,
+                               sp3d_2D_regs.reg_koj_2d_1080p_video_size);
 	/*waitint for state transfer*/
 	sp3d_wait_INT(4);
 	return rc;
@@ -637,7 +637,7 @@ static int sp3d_stop_snapshot(void){
 		rc = sp3d_spi_write_table(sp3d_snapshot_regs.reg_koj_2d_shutter_stop,
 			sp3d_snapshot_regs.reg_koj_2d_shutter_stop_size);
 	} else {
-		/*set sensor output size to 720p*/
+		/*set sensor output size to 1080p*/
 		rc = sp3d_spi_write_table(sp3d_snapshot_regs.reg_koj_3d_shutter_stop,
 			sp3d_snapshot_regs.reg_koj_3d_shutter_stop_size);
 		rc = sp3d_spi_write_table(sp3d_snapshot_regs.reg_koj_shutter_off,
@@ -1190,7 +1190,7 @@ static int32_t sp3d_sensor_setting(int update_type, int rt)
 
 			sp3d_state = SP3D_PREVIEW_MODE;
 		}else if(rt == RES_VIDEO){
-			/*2D 720p camcode only*/
+			/*2D 1080p camcode only*/
 			sp3d_video_setting();
 		}
 		break;
@@ -2240,20 +2240,20 @@ static int sp3d_change_framerate(struct sensor_cfg_data *cdata){
 	switch(cdata->mode){
 		case SENSOR_VIDEO_MODE:
 			if(cdata->cfg.down_framerate == 1){
-				pr_info("%s 2D video mode 15fps",__func__);
-				rc = sp3d_spi_write_table2(sp3d_2D_regs.reg_koj_2d_720p_video_15fps,
-                               sp3d_2D_regs.reg_koj_2d_720p_video_15fps_size);
+				pr_info("%s 2D video mode 30fps",__func__);
+				rc = sp3d_spi_write_table2(sp3d_2D_regs.reg_koj_2d_1080p_video_30fps,
+                               sp3d_2D_regs.reg_koj_2d_1080p_video_30fps_size);
 			}else{
 				pr_info("%s 2D video mode 24fps",__func__);
-				rc = sp3d_spi_write_table2(sp3d_2D_regs.reg_koj_2d_720p_video,
-                               sp3d_2D_regs.reg_koj_2d_720p_video_size);
+				rc = sp3d_spi_write_table2(sp3d_2D_regs.reg_koj_2d_1080p_video,
+                               sp3d_2D_regs.reg_koj_2d_1080p_video_size);
 			}
 			break;
 		case SENSOR_PREVIEW_MODE:
 			if(cdata->cfg.down_framerate == 1){
-				pr_info("%s 2D preview mode 15fps",__func__);
-				rc = sp3d_spi_write_table2(sp3d_2D_regs.reg_koj_2d_preview_15fps,
-                               sp3d_2D_regs.reg_koj_2d_preview_15fps_size);
+				pr_info("%s 2D preview mode 30fps",__func__);
+				rc = sp3d_spi_write_table2(sp3d_2D_regs.reg_koj_2d_preview_30fps,
+                               sp3d_2D_regs.reg_koj_2d_preview_30fps_size);
 			}else{
 				pr_info("%s 2D preview mode 24fps",__func__);
 				rc = sp3d_spi_write_table2(sp3d_2D_regs.reg_koj_2d_preview,

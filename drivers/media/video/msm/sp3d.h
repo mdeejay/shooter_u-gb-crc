@@ -337,12 +337,12 @@ struct sp3d_2d_reg {/*2D init setting*/
 
     struct sp3d_reg_conf const *reg_koj_2d_preview;
     uint16_t reg_koj_2d_preview_size;
-    struct sp3d_reg_conf const *reg_koj_2d_720p_video;
-    uint16_t reg_koj_2d_720p_video_size;
-    struct sp3d_reg_conf const *reg_koj_2d_720p_video_15fps;
-    uint16_t reg_koj_2d_720p_video_15fps_size;
-    struct sp3d_reg_conf const *reg_koj_2d_preview_15fps;
-    uint16_t reg_koj_2d_preview_15fps_size;
+    struct sp3d_reg_conf const *reg_koj_2d_1080p_video;
+    uint16_t reg_koj_2d_1080p_video_size;
+    struct sp3d_reg_conf const *reg_koj_2d_1080p_video_30fps;
+    uint16_t reg_koj_2d_1080p_video_30fps_size;
+    struct sp3d_reg_conf const *reg_koj_2d_preview_30fps;
+    uint16_t reg_koj_2d_preview_30fps_size;
 };
 
 struct sp3d_3d_reg {/*3D setting*/
