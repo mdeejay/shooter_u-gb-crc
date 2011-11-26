@@ -2749,7 +2749,7 @@ static struct htc_headset_8x60_platform_data htc_headset_8x60_data_xb = {
 	.adc_mpp	= XOADC_MPP_10,
 	.adc_amux	= PM_MPP_AIN_AMUX_CH5,
 	.adc_mic_bias	= {14375, 26643},
-	.adc_remote	= {0, 1219, 1440, 3862, 4231, 6783},
+	.adc_remote	= {0, 722, 723, 2746, 2747, 6603},
 };
 
 static struct platform_device htc_headset_8x60 = {
@@ -2771,22 +2771,27 @@ static struct platform_device *headset_devices[] = {
 static struct headset_adc_config htc_headset_mgr_config[] = {
 	{
 		.type = HEADSET_MIC,
-		.adc_max = 27404,
-		.adc_min = 22294,
+		.adc_max = 28920,
+		.adc_min = 21705,
 	},
 	{
 		.type = HEADSET_BEATS,
-		.adc_max = 22293,
-		.adc_min = 7976,
+		.adc_max = 21704,
+		.adc_min = 14605,
 	},
 	{
-		.type = HEADSET_MIC,
-		.adc_max = 7975,
-		.adc_min = 666,
+		.type = HEADSET_BEATS_SOLO,
+		.adc_max = 14604,
+		.adc_min = 8676,
+	},
+	{
+		.type = HEADSET_NO_MIC, /* HEADSET_INDICATOR */
+		.adc_max = 8675,
+		.adc_min = 5784,
 	},
 	{
 		.type = HEADSET_NO_MIC,
-		.adc_max = 665,
+		.adc_max = 5783,
 		.adc_min = 0,
 	},
 };
@@ -5551,8 +5556,8 @@ static void __init shooter_u_init(void)
 
 	/* Accessory */
 	printk(KERN_INFO "[HS_BOARD] (%s) system_rev = %d\n", __func__,
-	       system_rev);
-	if (system_rev >= 1) {
+      system_rev);
+             if (system_rev > 2) {
 		htc_headset_pmic_data.key_gpio =
 			PM8058_GPIO_PM_TO_SYS(SHOOTER_U_AUD_REMO_PRES);
 		htc_headset_pmic_data.key_enable_gpio =
